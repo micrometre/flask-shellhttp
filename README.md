@@ -1,5 +1,8 @@
 ## A Flask REST API
-### This repository implements a simple REST API using the Flask microframework.
+### This repository implements a simple REST API using 
+- Python/Flask
+- Sqlite3
+- Docker
 
 #### Routes
 - /auth/user 
@@ -10,7 +13,9 @@
     - Simple File upload Route
 - /forms
     - Simple Forms submission
-
+- /run
+    - Execute shell command     
+        - This example  a basic setup for executing shell commands  implement appropriate safeguards in any production environment.
 
 #### To  run the app in docker
 - Install Docker and Docker Compose .
