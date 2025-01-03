@@ -4,6 +4,7 @@
         "enctype",
         "firstname",
         "flaskalpr",
-        "flaskr"
+        "flaskr",
+        "jsonify"
     ]
 }

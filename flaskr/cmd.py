@@ -1,6 +1,6 @@
 import subprocess
 from flask import (
-    Response, Blueprint, json, request,flash, redirect, send_file,  url_for,  render_template, 
+    Response, Blueprint, json, jsonify, request,flash, redirect, send_file,  url_for,  render_template, 
 )
 from subprocess import PIPE, Popen, check_output
 
@@ -31,7 +31,9 @@ def create_i():
             print((output))
         except subprocess.CalledProcessError as e:
             output = f"Error: {e}"
-    return("2222") 
+    #return("2222") 
+    return jsonify(output)    
+
 
 
 
