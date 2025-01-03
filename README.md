@@ -13,7 +13,7 @@
     - Simple Forms submission
 - /run
     - Execute shell command     
-        - This example  a basic setup for executing shell commands  implement appropriate safeguards in any production environment.
+        - This example is a basic setup for executing shell commands, implement appropriate safeguards in any production environment.
 
 #### To  run the app in docker
 - Install Docker and Docker Compose .
@@ -21,7 +21,7 @@
 - Clone the repo
 
 ```shell
-git clone  https://github.com/micrometre/flask-restgit
+git clone  https://github.com/micrometre/flask-shellhttp
 cd flask-restgit
 docker compose up -d 
 ```
