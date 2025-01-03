@@ -34,8 +34,22 @@
         <input type="text" name="command" placeholder="Enter command">
         <button type="submit">Execute</button>
     </form>
+
     {% if output %}
-        <p>{{ output }}</p>
+        <table>
+            {% for row in  output.splitlines() %}
+                <tr>
+                    {% for cell in row.split('|') %}
+                        <td>{{ cell }}</td>
+                    {% endfor %}
+                </tr>
+            {% endfor %}
+        </table>
     {% endif %}
+
+
+
+
 </body>
+
 </html>

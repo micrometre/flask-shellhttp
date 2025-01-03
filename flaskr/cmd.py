@@ -22,6 +22,7 @@ def create():
         command = request.form.get('command')
         try:
             output = subprocess.check_output(command, shell=True, text=True) # type: ignore
+            print(type(output))
         except subprocess.CalledProcessError as e:
             output = f"Error: {e}"
     return render_template('cmd/index.html', output=output)
