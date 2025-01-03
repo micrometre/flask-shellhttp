@@ -1,9 +1,7 @@
-## A Flask REST API
-### This repository implements a simple REST API using 
+###  REST API to run command-line tools
 - Python/Flask
 - Sqlite3
 - Docker
-
 #### Routes
 - /auth/user 
     - Register a new user

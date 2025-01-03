@@ -11,7 +11,7 @@ WORKDIR /app
 COPY . /app
 
 # Install any needed packages specified in requirements.txt
-RUN pip install --trusted-host pypi.python.org -r requirements.txt
+RUN pip install --trusted-host pypi.python.org -r flaskr/requirements.txt
 
 # Make port 5000 available to the world outside this container
 EXPOSE 5000
@@ -20,7 +20,8 @@ EXPOSE 5000
 ENV FLASK_APP flaskr
 ENV FLASK_ENV development 
 
-RUN ["python", "-m", "flask", "init-db"] 
+RUN ["pip","install", "-e", "."] 
+#RUN ["python", "-m", "flask", "init-db"] 
 
 ENTRYPOINT ["python"]
 

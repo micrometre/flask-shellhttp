@@ -14,6 +14,7 @@ from .db import get_db
 bp = Blueprint('forms', __name__, url_prefix='/forms')
 
 @bp.route("/")
+@login_required
 def index():
     """Show all the posts, most recent first."""
     db = get_db()
@@ -22,7 +23,7 @@ def index():
         " FROM forms p JOIN user u ON p.author_id = u.id"
         " ORDER BY created DESC"
     ).fetchall()
-    return render_template("blog/messages.html", forms=forms)
+    return render_template("forms/index.html", forms=forms)
 
 
 def get_post(id, check_author=True):
@@ -41,7 +42,7 @@ def get_post(id, check_author=True):
         get_db()
         .execute(
             "SELECT p.id, title, body, created, author_id, username"
-            " FROM post p JOIN user u ON p.author_id = u.id"
+            " FROM forms p JOIN user u ON p.author_id = u.id"
             " WHERE p.id = ?",
             (id,),
         )
@@ -104,12 +105,12 @@ def update(id):
         else:
             db = get_db()
             db.execute(
-                "UPDATE post SET title = ?, body = ? WHERE id = ?", (title, body, id)
+                "UPDATE forms SET title = ?, body = ? WHERE id = ?", (title, body, id)
             )
             db.commit()
-            return redirect(url_for("blog.index"))
+            return redirect(url_for("forms.index"))
 
-    return render_template("blog/update.html", post=post)
+    return render_template("forms/update.html", post=post)
 
 
 @bp.route("/<int:id>/delete", methods=("POST",))
@@ -122,6 +123,6 @@ def delete(id):
     """
     get_post(id)
     db = get_db()
-    db.execute("DELETE FROM post WHERE id = ?", (id,))
+    db.execute("DELETE FROM forms WHERE id = ?", (id,))
     db.commit()
-    return redirect(url_for("blog.index"))
+    return redirect(url_for("forms.index"))

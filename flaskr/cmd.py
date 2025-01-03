@@ -5,6 +5,7 @@ from flask import (
 import logging
 from werkzeug.utils import secure_filename
 from .db import get_db
+from .auth import login_required
 
 
 
@@ -14,6 +15,7 @@ logging.getLogger('flask_cors').level = logging.DEBUG
 
 
 @bp.route('/', methods=('GET', 'POST'))
+@login_required
 def create():
     output = None
     if request.method == 'POST':
