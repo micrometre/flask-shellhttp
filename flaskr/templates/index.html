@@ -1,0 +1,104 @@
+<!DOCTYPE html>
+
+<html>
+
+<head>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
+
+    <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" rel="stylesheet"
+        integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+    <link href="https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet"
+        integrity="sha384-wvfXpqpZZVQGK6TAh5PVlGOfQNHSoD2xbE+QkPxCAFlNEevoEH3Sl0sibVcOQVnN" crossorigin="anonymous">
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+
+<body>
+    <h1>HTML DOM Events</h1>
+
+    <p id="demo"></p>
+
+
+    <div id="container">
+
+        <table>
+            <thead>
+                <tr>
+                </tr>
+            </thead>
+
+            <tbody></tbody>
+        </table>
+
+    </div>
+
+
+
+    <script>
+
+
+
+
+        var json = [{
+            command: "uptime",
+            host: "google.com ",
+            name: "ping a host",
+            id: 345
+        },
+        {
+            command: "uname",
+            host: "localhost",
+            name: "Get Linux Version",
+            id: 987
+        }
+        ];
+
+        var $container = $("#container");
+        var $thead = $("#container table thead");
+        var $tbody = $("#container table tbody");
+        var $row = $("#container table tbody tr");
+
+        // Loop through items in JSON data..
+        json.forEach(function (item) {
+            var $button = $("<button>" + item.name + "</button>");
+            $container.prepend($button);
+
+            // Button click handler..
+            $button.on("click", async function () {
+
+
+                // Show table if it's not already visible..
+                $("#container table").show();
+
+                try {
+                    const response = await fetch('/cmd/i', {
+                        method: 'POST',
+                        headers: {
+                            'Content-Type': 'application/json'
+                        },
+                        body: JSON.stringify(
+                            item.command
+                        )
+                    });
+
+                    if (!response.ok) {
+                        throw new Error(`HTTP error! status: ${response.status}`);
+                    }
+
+                    const data = await response.json();
+                    console.log((item.command))
+                    console.log(data);
+
+                } catch (error) {
+                    console.error('Error:', error);
+                }
+
+
+            });
+        });
+
+
+    </script>
+
+</body>
+
+</html>
