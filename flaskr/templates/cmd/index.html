@@ -29,6 +29,80 @@
 
     <title>Shell Command Executor</title>
 <body>
+  <h1>HTML DOM Events</h1>
+  <p id="demo"></p>
+  <div id="container">
+      <table>
+          <thead>
+              <tr>
+              </tr>
+          </thead>
+          <tbody></tbody>
+      </table>
+  </div>
+  <div id="commands"></div>
+
+  <script>
+    var json = [{
+        command: "uptime",
+        name: "uptime",
+        id: 1
+    },
+    {
+        command: "uname",
+        name: "uname",
+        id: 2
+    },
+    {
+        command: "pwd",
+        name: "pwd",
+        id: 2
+    }
+
+    ];
+    var $container = $("#container");
+    var $div = $("#commands");
+    var $thead = $("#container table thead");
+    var $tbody = $("#container table tbody");
+    var $row = $("#container table tbody tr");
+    json.forEach(function (item) {
+        var $button = $("<button>" + item.name + "</button>");
+        var $output = $("<p>" + item.name + "</p>");
+        $container.prepend($button);
+        $button.on("click", async function () {
+            $("#container table").show();
+            try {
+                const response = await fetch('/cmd/i', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify(
+                        item.command
+                    )
+                });
+
+                if (!response.ok) {
+                    throw new Error(`HTTP error! status: ${response.status}`);
+                }
+
+                const data = await response.json();
+                console.log((item.command))
+                await $div.prepend(data);
+                console.log(data);
+
+            } catch (error) {
+                console.error('Error:', error);
+            }
+
+
+        });
+    });
+
+</script>
+
+
+
     <h1>Execute Shell Command</h1>
     <form method="POST">
         <input type="text" name="command" placeholder="Enter command">
