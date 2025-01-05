@@ -1,0 +1,28 @@
+.App {
+  background-color: aqua;
+}
+
+
+.header {
+  background-color: aqua;
+  display: flex;
+  flex-direction: row;
+}
+
+.cmdbtn {
+  min-height: 40vh;
+  font-size: 4rem;
+  color: #b318f0;
+}
+.link {
+  color: #b318f0;
+}
+
+@keyframes logo-spin {
+  from {
+    transform: rotate(360deg);
+  }
+  to {
+    transform: rotate(0deg);
+  }
+}
