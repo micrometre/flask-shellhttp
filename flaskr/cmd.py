@@ -15,7 +15,17 @@ bp = Blueprint('cmd', __name__, url_prefix='/cmd')
 logging.getLogger('flask_cors').level = logging.DEBUG
 
 
-messages = []
+@bp.route('/test', methods=('GET', 'POST'))
+def create_test():
+    if request.method == 'POST':
+        request_data = request.get_json()
+        print((request_data))
+        data = request_data
+    return jsonify(data)    
+
+
+
+
 
 
 @bp.route('/i', methods=('GET', 'POST'))
@@ -72,4 +82,5 @@ def create():
         except subprocess.CalledProcessError as e:
             output = f"Error: {e}"
     return render_template('cmd/index.html', output=output)
+
 

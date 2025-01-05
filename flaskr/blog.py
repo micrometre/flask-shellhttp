@@ -11,6 +11,12 @@ from .auth import login_required
 from .db import get_db
 
 bp = Blueprint("blog", __name__)
+@bp.route('/login', methods=['GET', 'POST'])
+def login_page():
+    return {
+        "token": 'test123'
+    }
+
 
 
 @bp.route("/")
