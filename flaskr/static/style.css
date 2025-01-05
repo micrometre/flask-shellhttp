@@ -32,7 +32,21 @@ nav {
   padding: 0 0.5rem;
 }
 
-nav h1 {
+#commands{
+  background: rgb(30, 173, 66);
+  color: aliceblue;
+  font-weight: bold;
+  margin: 0;
+
+}
+#cmdout{
+  background: rgb(30, 173, 66);
+  color: aliceblue;
+  font-weight: bold;
+  margin: 0;
+
+}
+nav h1  {
   flex: auto;
   margin: 0;
 }

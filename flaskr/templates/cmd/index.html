@@ -1,14 +1,16 @@
 <!DOCTYPE html>
 <html>
 
-<title>{% block title %}{% endblock %} - Flaskr</title>
-<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
+<head>
 
-<link href="https://stackpath.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" rel="stylesheet"
-    integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
-<link href="https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet"
-    integrity="sha384-wvfXpqpZZVQGK6TAh5PVlGOfQNHSoD2xbE+QkPxCAFlNEevoEH3Sl0sibVcOQVnN" crossorigin="anonymous">
-<link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+    <title>{% block title %}{% endblock %} - Flaskr</title>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
+    <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" rel="stylesheet"
+        integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+    <link href="https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet"
+        integrity="sha384-wvfXpqpZZVQGK6TAh5PVlGOfQNHSoD2xbE+QkPxCAFlNEevoEH3Sl0sibVcOQVnN" crossorigin="anonymous">
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
 <nav>
     <h1><a href="{{ url_for('index') }}">Flaskr</a></h1>
     <h1><a href="{{ url_for('forms.index') }}">Forms</a></h1>
@@ -34,116 +36,111 @@
 
 
 
-    <div id="main"></div>
-    <h1>HTML DOM Events</h1>
-    <p id="demo"></p>
-
     <div id="container">
 
         <table>
-            <thead>
+
+            <tbody>
+
                 <tr>
-                    <th id="commands"></th>
+
+                    <td>
+                        <output id="commands"></output>
+                    </td>
+
                 </tr>
-            </thead>
 
-            <tbody></tbody>
+            </tbody>
         </table>
-    </div>
-    <div id="commands"></div>
+        <script>
+            var json = [{
+                command: "uptime",
+                name: "uptime",
+                id: 1
+            },
+            {
+                command: "uname",
+                name: "uname",
+                id: 2
+            },
+            {
+                command: "pwd",
+                name: "pwd",
+                id: 2
+            },
+            {
+                command: "ping google.com -c 5",
+                name: "ping",
+                id: 2
+            }
 
-    <script>
-        var json = [{
-            command: "uptime",
-            name: "uptime",
-            id: 1
-        },
-        {
-            command: "uname",
-            name: "uname",
-            id: 2
-        },
-        {
-            command: "pwd",
-            name: "pwd",
-            id: 2
-        },
-        {
-            command: "ping google.com -c 5",
-            name: "ping",
-            id: 2
-        }
+            ];
+            var $container = $("#container");
+            var $p = $("#commands");
+            json.forEach(function (item) {
+                var $button = $("<button> " + item.name + "</button>");
+                $button.prop("type", "submit")
+                var $output = $("<p>" + item.name + "</p>");
+                $container.prepend($button);
+                $button.on("click", async function () {
+                    $("#container table").show();
+                    try {
+                        const response = await fetch('/cmd/i', {
+                            method: 'POST',
+                            headers: {
+                                'Content-Type': 'application/json'
+                            },
+                            body: JSON.stringify(
+                                item.command
+                            )
+                        });
 
-        ];
-        var $container = $("#container");
-        var $p = $("#commands");
-        var $thead = $("#container table thead");
-        var $tbody = $("#container table tbody");
-        var $row = $("#container table tbody tr");
-        json.forEach(function (item) {
-            var $button = $("<button>" + item.name + "</button>");
-            var $output = $("<p>" + item.name + "</p>");
-            $container.prepend($button);
-            $button.on("click", async function () {
-                $("#container table").show();
-                $row.html('<td>' + item.host + '</td>' + '<td>' + item.name + '</td>' + '<td>' + item.id + '</td>');
-                try {
-                    const response = await fetch('/cmd/i', {
-                        method: 'POST',
-                        headers: {
-                            'Content-Type': 'application/json'
-                        },
-                        body: JSON.stringify(
-                            item.command
-                        )
-                    });
+                        if (!response.ok) {
+                            throw new Error(`HTTP error! status: ${response.status}`);
+                        }
 
-                    if (!response.ok) {
-                        throw new Error(`HTTP error! status: ${response.status}`);
+                        const data = await response.json();
+                        console.log((item.command))
+                        await $p.prepend(data);
+
+           
+
+                    } catch (error) {
+                        console.error('Error:', error);
                     }
 
-                    const data = await response.json();
-                    console.log((item.command))
-                    await $p.prepend(data);
 
-
-
-
-                    console.log(data);
-
-                } catch (error) {
-                    console.error('Error:', error);
-                }
-
-
+                });
             });
-        });
 
-    </script>
-
+        </script>
 
 
-    <h1>Execute Shell Command</h1>
-    <form method="POST">
-        <input type="text" name="command" placeholder="Enter command">
-        <button type="submit">Execute</button>
-    </form>
 
-    {% if output %}
-    <table>
-        {% for row in output.splitlines() %}
-        <tr>
-            {% for cell in row.split('|') %}
-            <td>{{ cell }}</td>
+        <p>
+            <button onclick="document.getElementById('commands').value = ''">Clear button input </button>
+        </p>
+        <form method="POST">
+            <input type="text" name="command" placeholder="Enter command">
+            <button type="submit">Execute</button>
+        </form>
+
+        {% if output %}
+        <table>
+            {% for row in output.splitlines() %}
+            <tr>
+                {% for cell in row.split('|') %}
+                <td>{{ cell }}</td>
+                {% endfor %}
+            </tr>
             {% endfor %}
-        </tr>
-        {% endfor %}
-    </table>
-    {% endif %}
+        </table>
+        {% endif %}
 
 
 
 
+    </div>
 </body>
 
 </html>
